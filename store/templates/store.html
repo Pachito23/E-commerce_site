@@ -26,47 +26,25 @@
       <section class="py-5">
          <div class="container px-4 px-lg-5 mt-5">
                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                  {% for product in products %}
                   <div class="col mb-5">
                      <div class="card h-100">
-                           <!-- Product image-->
-                           <img class="card-img-top" style = "height: 50%;" src="https://www.grand-froid.fr/4369-thickbox_default/reversible-winter-hiking-jacket-for-women.jpg" alt="...">
-                           <!-- Product details-->
-                           <div class="card-body p-4">
-                              <div class="text-center">
-                                 <!-- Product name-->
-                                 <h5 class="fw-bolder">Medium Altitude Jacket</h5>
-                                 <!-- Product price-->
-                                 $40.00 - $60.00
-                              </div>
-                           </div>
-                           <!-- Product actions-->
-                           <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
-                           </div>
-                     </div>
-                  </div>
-                  <div class="col mb-5">
-                     <div class="card h-100">
+                        {% if product.sale %}
                            <!-- Sale badge-->
-                           <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                           <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale of {{product.discount}}%</div>
+                        {% endif %}
                            <!-- Product image-->
-                           <img class="card-img-top" src="https://nahanny.com/330-large_default/sac-cu-puf-nahanny-alpin.jpg" alt="...">
+                           <img class="card-img-top" src="{{product.imageURL}}" alt="...">
                            <!-- Product details-->
                            <div class="card-body p-4">
                               <div class="text-center">
                                  <!-- Product name-->
-                                 <h5 class="fw-bolder">Sleeping Bag Alpin</h5>
-                                 <!-- Product reviews-->
-                                 <div class="d-flex justify-content-center small text-warning mb-2">
-                                       <div class="bi-star-fill"></div>
-                                       <div class="bi-star-fill"></div>
-                                       <div class="bi-star-fill"></div>
-                                       <div class="bi-star-fill"></div>
-                                       <div class="bi-star-fill"></div>
-                                 </div>
+                                 <h5 class="fw-bolder">{{product.name}}</h5>
                                  <!-- Product price-->
-                                 <span class="text-muted text-decoration-line-through">$200.00</span>
-                                 $180.00
+                                 {% if product.sale %}
+                                    <span class="text-muted text-decoration-line-through">${{product.price|floatformat:2}}</span>
+                                 {% endif %}
+                                 ${{product.final_price|floatformat:2}}
                               </div>
                            </div>
                            <!-- Product actions-->
@@ -75,154 +53,7 @@
                            </div>
                      </div>
                   </div>
-                  
-                  <div class="col mb-5">
-                     <div class="card h-100">
-                           <!-- Sale badge-->
-                           <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                           <!-- Product image-->
-                           <img class="card-img-top" src="https://nahanny.com/324-large_default/jacheta-cu-puf.jpg" alt="...">
-                           <!-- Product details-->
-                           <div class="card-body p-4">
-                              <div class="text-center">
-                                 <!-- Product name-->
-                                 <h5 class="fw-bolder">Heavy Jacket</h5>
-                                 <!-- Product price-->
-                                 <span class="text-muted text-decoration-line-through">$100.00</span>
-                                 $75.00
-                              </div>
-                           </div>
-                           <!-- Product actions-->
-                           <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                           </div>
-                     </div>
-                  </div>
-                  <div class="col mb-5">
-                     <div class="card h-100">
-                           <!-- Product image-->
-                           <img class="card-img-top" src="https://static.fibre2fashion.com/MemberResources/LeadResources/7/2019/6/Buyer/19164667/Images/19164667_0_camping-sleeping-bag.jpg" alt="...">
-                           <!-- Product details-->
-                           <div class="card-body p-4">
-                              <div class="text-center">
-                                 <!-- Product name-->
-                                 <h5 class="fw-bolder">Light Sleeping Bag</h5>
-                                 <!-- Product reviews-->
-                                 <div class="d-flex justify-content-center small text-warning mb-2">
-                                       <div class="bi-star-fill"></div>
-                                       <div class="bi-star-fill"></div>
-                                       <div class="bi-star-fill"></div>
-                                       <div class="bi-star-fill"></div>
-                                       <div class="bi-star-fill"></div>
-                                 </div>
-                                 <!-- Product price-->
-                                 $100.00
-                              </div>
-                           </div>
-                           <!-- Product actions-->
-                           <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                           </div>
-                     </div>
-                  </div>
-                  <div class="col mb-5">
-                     <div class="card h-100">
-                           <!-- Sale badge-->
-                           <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                           <!-- Product image-->
-                           <img class="card-img-top" style = "height: 50%;" src="https://cdn.shopify.com/s/files/1/0231/8024/7118/products/ME-005029_Lhotse_Jacket_ME-01567_Anvil-Grey_Black_Colourpop_1252x1852.png?v=1601984916" alt="...">
-                           <!-- Product details-->
-                           <div class="card-body p-4">
-                              <div class="text-center">
-                                 <!-- Product name-->
-                                 <h5 class="fw-bolder">Light Jacket</h5>
-                                 <!-- Product price-->
-                                 <span class="text-muted text-decoration-line-through">$75.00</span>
-                                 $50.00
-                              </div>
-                           </div>
-                           <!-- Product actions-->
-                           <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                           </div>
-                     </div>
-                  </div>
-                  <div class="col mb-5">
-                     <div class="card h-100">
-                           <!-- Product image-->
-                           <img class="card-img-top" src="https://contents.mediadecathlon.com/p411498/9f2f1513b7bbc9802087e45b907b368c/p411498.jpg" alt="...">
-                           <!-- Product details-->
-                           <div class="card-body p-4">
-                              <div class="text-center">
-                                 <!-- Product name-->
-                                 <h5 class="fw-bolder">Light Hammock</h5>
-                                 <!-- Product price-->
-                                 $120.00 - $150.00
-                              </div>
-                           </div>
-                           <!-- Product actions-->
-                           <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
-                           </div>
-                     </div>
-                  </div>
-                  <div class="col mb-5">
-                     <div class="card h-100">
-                           <!-- Sale badge-->
-                           <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                           <!-- Product image-->
-                           <img class="card-img-top" src="https://m.media-amazon.com/images/I/71qaS1PlGOL.jpg" alt="...">
-                           <!-- Product details-->
-                           <div class="card-body p-4">
-                              <div class="text-center">
-                                 <!-- Product name-->
-                                 <h5 class="fw-bolder">Heavy Hammock</h5>
-                                 <!-- Product reviews-->
-                                 <div class="d-flex justify-content-center small text-warning mb-2">
-                                       <div class="bi-star-fill"></div>
-                                       <div class="bi-star-fill"></div>
-                                       <div class="bi-star-fill"></div>
-                                       <div class="bi-star-fill"></div>
-                                       <div class="bi-star-fill"></div>
-                                 </div>
-                                 <!-- Product price-->
-                                 <span class="text-muted text-decoration-line-through">$200.00</span>
-                                 $250.00
-                              </div>
-                           </div>
-                           <!-- Product actions-->
-                           <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                           </div>
-                     </div>
-                  </div>
-                  <div class="col mb-5">
-                     <div class="card h-100">
-                           <!-- Product image-->
-                           <img class="card-img-top" src="https://i.pinimg.com/originals/89/80/31/8980319491881cd6317f5f95f0d3f107.jpg" alt="...">
-                           <!-- Product details-->
-                           <div class="card-body p-4">
-                              <div class="text-center">
-                                 <!-- Product name-->
-                                 <h5 class="fw-bolder">Basic Camping Sleeping Bag</h5>
-                                 <!-- Product reviews-->
-                                 <div class="d-flex justify-content-center small text-warning mb-2">
-                                       <div class="bi-star-fill"></div>
-                                       <div class="bi-star-fill"></div>
-                                       <div class="bi-star-fill"></div>
-                                       <div class="bi-star-fill"></div>
-                                       <div class="bi-star-fill"></div>
-                                 </div>
-                                 <!-- Product price-->
-                                 $75.00
-                              </div>
-                           </div>
-                           <!-- Product actions-->
-                           <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                           </div>
-                     </div>
-                  </div>
+                  {% endfor %}
                </div>
          </div>
       </section>

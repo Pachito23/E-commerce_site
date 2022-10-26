@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.messages',
+    'django.contrib.sessions',
     'django.contrib.staticfiles',
 
     'store.apps.StoreConfig',
@@ -107,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Bucharest'
 
 USE_I18N = True
 
@@ -127,3 +128,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS=[
     os.path.join(BASE_DIR,'static')
 ]
+
+MEDIA_URL = '/images/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'static/images')
