@@ -8,15 +8,16 @@
             <div class="col-md-8">
               <div class="card mb-4">
                 <div class="card-header py-3">
-                  <h5 class="mb-0">Cart - 2 items</h5>
+                  <h5 class="mb-0">Cart - {{order.cart_total_elements}} items</h5>
                 </div>
                 <div class="card-body">
+                  {% for item in items %}
                   <!-- Single item -->
                   <div class="row">
                     <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
                       <!-- Image -->
                       <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
-                        <img src="https://nahanny.com/330-large_default/sac-cu-puf-nahanny-alpin.jpg" class="w-100">
+                        <img src="{{item.product.imageURL}}" class="w-100">
                         <a href="#!">
                           <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
                         </a>
@@ -25,9 +26,8 @@
                     </div>
                     <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
                       <!-- Data -->
-                      <p><strong>Product 1</strong></p>
-                      <p>Color: blue</p>
-                      <p>Size: M</p>
+                      <p><strong>{{item.product.name}}</strong></p>
+                      <p>Size: {{item.product.size}}</p>
                       <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip" title="Remove item">
                         <i class="fas fa-trash"></i>
                       </button>
@@ -42,64 +42,25 @@
       
                         <div class="form-outline" style="max-width: 100px;">
                             <label class="form-label" style="position: relative; left: 20px;" for="form1">Quantity</label>
-                          <input id="form1" min="0" name="quantity" value="1" type="number" class="form-control">
+                          <input id="form1" min="0" name="quantity" value="{{item.quantity}}" type="number" class="form-control">
                         </div>
     
                       </div>
       
                       <!-- Price -->
+                      {% if item.product.sale %}
+                           <!-- Sale -->
+                           <span class="text-muted text-decoration-line-through" style="position: relative; left: 70px;"><small>${{item.get_total_price|floatformat:2}} with {{item.product.discount}}% sale</small></span>
+                      {% endif %}
                       <p class="text-start text-md-right" style="position: relative; right: 40px;">
-                        <strong>$170.99</strong>
+                        <strong>${{item.get_total_final_price|floatformat:2}}</strong>
                       </p>
                     </div>
                   </div>
 
                   <!-- Separation line -->
-      
                   <hr class="my-4">
-      
-                  <!-- Single item -->
-                  <div class="row">
-                    <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
-                      <!-- Image -->
-                      <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
-                        <img src="https://contents.mediadecathlon.com/p411498/9f2f1513b7bbc9802087e45b907b368c/p411498.jpg" class="w-100">
-                        <a href="#!">
-                          <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
-                        </a>
-                      </div>
-                    </div>
-      
-                    <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
-                      <!-- Data -->
-                      <p><strong>Product 2</strong></p>
-                      <p>Color: blue</p>
-                      <p>Size: S</p>
-                      <button type="button" class="btn btn-primary btn-sm me-1 mb-2" data-mdb-toggle="tooltip" title="Remove item">
-                        <i class="fas fa-trash"></i>
-                      </button>
-                      <button type="button" class="btn btn-danger btn-sm mb-2" data-mdb-toggle="tooltip" title="Move to the wish list">
-                        <i class="fas fa-heart"></i>
-                      </button>
-                    </div>
-      
-                    <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                      <!-- Quantity -->
-                      <div class="d-flex mb-4" style="max-width: 300px; position: relative; left: 90px;">
-      
-                        <div class="form-outline" style="max-width: 100px;">
-                            <label class="form-label" style="position: relative; left: 20px;" for="form1">Quantity</label>
-                          <input id="form1" min="0" name="quantity" value="1" type="number" class="form-control">
-                        </div>
-      
-                      </div>
-      
-                      <!-- Price -->
-                      <p class="text-start text-md-right" style="position: relative; right: 40px;">
-                        <strong>$87.99</strong>
-                      </p>
-                    </div>
-                  </div>
+                  {% endfor %}
 
                   <!-- Shipping -->
 
@@ -108,7 +69,7 @@
               <div class="card mb-4">
                 <div class="card-body">
                   <p><strong>Expected shipping delivery</strong></p>
-                  <p class="mb-0">12.10.2020 - 14.10.2020</p>
+                  <p class="mb-0">{{order.delivery_date1|date:"j.n.Y"}} - {{order.delivery_date2|date:"j.n.Y"}}</p>
                 </div>
               </div>
 
@@ -133,7 +94,7 @@
                   <ul class="list-group list-group-flush">
                     <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                       Products
-                      <span>$53.98</span>
+                      <span>${{order.cart_total_final_price|floatformat:2}}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center px-0">
                       Shipping
@@ -146,7 +107,7 @@
                           <p class="mb-0">(including VAT)</p>
                         </strong>
                       </div>
-                      <span><strong>$53.98</strong></span>
+                      <span><strong>${{order.cart_total_final_price|floatformat:2}}</strong></span>
                     </li>
                   </ul>
       
