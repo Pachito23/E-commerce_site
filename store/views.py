@@ -17,9 +17,13 @@ def cart(request):
      context = {}
      return render(request, 'cart.html', context)
 
-def checkout(request):
+def shipping(request):
      context = {}
-     return render(request, 'checkout.html', context)
+     return render(request, 'shipping.html', context)
+
+def payment(request):
+     context = {}
+     return render(request, 'payment.html', context)
 
 def about(request):
      context = {}
