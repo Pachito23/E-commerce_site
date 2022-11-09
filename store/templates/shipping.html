@@ -24,33 +24,22 @@
         <div class="col-md-4 order-md-2 mb-4">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
             <span class="text-muted">Your cart</span>
-            <span class="badge badge-secondary badge-pill">3</span>
+            <span class="badge badge-secondary badge-pill">{{order.cart_total_elements}}</span>
           </h4>
           <ul class="list-group mb-3">
+            {% for item in items %}
             <li class="list-group-item d-flex justify-content-between lh-condensed">
               <div>
-                <h6 class="my-0">Product name</h6>
-                <small class="text-muted">Quantity: 2</small>
+                <h6 class="my-0">{{item.product.name}}</h6>
+                <small class="text-muted">Quantity: {{item.quantity}} &nbsp;&nbsp;</small>
+                <small class="text-muted">Size: {{item.product.size}}</small>
               </div>
-              <span class="my-0">$12</span>
+              <span class="my-0">${{item.get_total_final_price|floatformat:2}}</span>
             </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-              <div>
-                <h6 class="my-0">Second product</h6>
-                <small class="text-muted">Quantity: 2</small>
-              </div>
-              <span class="my-0">$8</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-              <div>
-                <h6 class="my-0">Third item</h6>
-                <small class="text-muted">Quantity: 2</small>
-              </div>
-              <span class="my-0">$5</span>
-            </li>
+            {% endfor %}
             <li class="list-group-item d-flex justify-content-between">
               <strong><span>Total: </span></strong>
-              <strong>$20</strong>
+              <strong>${{order.cart_total_final_price|floatformat:2}}</strong>
             </li>
           </ul>
 
@@ -144,6 +133,7 @@
                 <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required="">
                 <label class="custom-control-label" for="debit">Debit card</label>
               </div>
+              <!--
               <div class="custom-control custom-radio">
                 <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required="">
                 <label class="custom-control-label" for="paypal">Paypal</label>
@@ -152,6 +142,7 @@
                 <input id="cash" name="paymentMethod" type="radio" class="custom-control-input" required="">
                 <label class="custom-control-label" for="cash">Cash</label>
               </div>
+              -->
             </div>
 
             <!--  Payment data

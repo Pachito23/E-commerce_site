@@ -1,0 +1,30 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Lato:300,400|Montserrat:700' rel='stylesheet' type='text/css' >
+    <style>
+        body{
+         background-image: url("https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg");
+         background-position: center; /* Center the image */
+         background-repeat: no-repeat; /* Do not repeat the image */
+         background-size: cover; /* Resize the background image to cover the entire container */
+      }
+   </style>
+ </head>
+
+ <body>
+    <div class="jumbotron text-center">
+        <h1 class="display-3"><b>Thank You!</b></h1>
+        <p class="lead"><strong>Please check your email</strong> for further details about your order.</p>
+        <hr>
+        <p>
+          Having trouble? <a href="{% url 'about' %}">Contact us</a>
+        </p>
+        <p class="lead">
+          <a class="btn btn-primary btn-sm" href="/" role="button">Continue to homepage</a>
+        </p>
+      </div>
+ </body>
+{% endblock content %}
