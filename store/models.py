@@ -41,6 +41,18 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+class Shipping(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank = True, null = True)
+    address = models.CharField(max_length=200,null=True)
+    city = models.CharField(max_length=20,null=True)
+    comments = models.CharField(max_length=200,null=True)
+    country = models.CharField(max_length=20,null=True)
+    zipcode = models.CharField(max_length=20,null=True)
+    date_added = models.DateTimeField(auto_now_add = True)
+
+    def __str__(self):
+        return self.address
+
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank = True, null = True)
     date_ordered = models.DateTimeField(auto_now_add = True)
@@ -48,9 +60,11 @@ class Order(models.Model):
     #complete = True => Closed cart => no items can be added to the cart
     complete = models.BooleanField(default = False, null = True, blank = False)
     transaction_id = models.CharField(max_length=200,null=True)
+    shipping = models.ForeignKey(Shipping, on_delete=models.SET_NULL, blank = True, null = True)
+    payment_confirmation = models.BooleanField(default = False, null = True, blank = False)
 
     def __str__(self):
-        return str(self.id)
+        return 'Order nr ' + str(self.id)
 
     @property
     def delivery_date1(self):
@@ -95,14 +109,5 @@ class OrderItem(models.Model):
         total = self.product.price * self.quantity
         return total
 
-class Shipping(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank = True, null = True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank = True, null = True)
-    address = models.CharField(max_length=200,null=True)
-    city = models.CharField(max_length=20,null=True)
-    state = models.CharField(max_length=20,null=True)
-    zipcode = models.CharField(max_length=20,null=True)
-    date_added = models.DateTimeField(auto_now_add = True)
-
     def __str__(self):
-        return self.address
+        return self.product.name

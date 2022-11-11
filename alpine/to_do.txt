@@ -1,0 +1,5 @@
+in case the cart is empty block shipping and payment
+implement payment
+resolve for guest users
+login + register
+maybe use delete on cascade for things

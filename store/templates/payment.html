@@ -99,5 +99,59 @@ input{
             </div>
         </div>
     </div>
+
+    <!-- <script type="text/javascript">
+        var form = document.getElementsByClassName('form-control')
+        
+        document.getElementById('go-to-payment').addEventListener('click',function(e){
+          SubmitFormData()
+        })
+        
+        function SubmitFormData()
+        {
+
+          console.log('Button clicked');
+
+          var UserFormData = {
+            'FirstName':null,
+            'LastName':null,
+            'email':null,
+            'total':total,
+          }
+
+          var ShippingData = {
+            'address':null,
+            'comments':null,
+            'country':null,
+            'city':null,
+            'zip':null,
+          }
+
+          UserFormData.FirstName = form.FirstName.value
+          UserFormData.LastName = form.LastName.value
+          UserFormData.email = form.email.value
+          ShippingData.address = form.address.value
+          ShippingData.comments = form.comments.value
+          ShippingData.country = form.country.value
+          ShippingData.city = form.city.value
+          ShippingData.zip = form.zip.value
+
+          var url='/process_order/'
+          fetch(url,{
+            method:'POST',
+            headers:{
+              'Content-type':'application/json',
+              'X-CSRFToken':csrftoken,
+            },
+            body:JSON.stringify({'form':UserFormData,'shipping':ShippingData})
+          })
+
+          .then((response) => response.json())
+          .then((data)=>{
+            console.log('Success:',data);
+          })
+        }
+
+      </script> -->
  </body>
 {% endblock content %}
