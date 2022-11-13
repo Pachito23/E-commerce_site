@@ -75,6 +75,18 @@ def jackets(request):
      context = {'products': products,'items':items, 'order':order}
      return render(request, 'jackets.html', context)
 
+def sales(request):
+     products = Product.objects.all()
+     if request.user.is_authenticated:
+          customer = request.user.customer
+          order,created = Order.objects.get_or_create(customer=customer,payment_confirmation = False)
+          items =order.orderitem_set.all()
+     else:
+          items=[]
+          order=[]
+     context = {'products': products,'items':items, 'order':order}
+     return render(request, 'sales.html', context)
+
 def accessories(request):
      products = Product.objects.all()
      if request.user.is_authenticated:
@@ -177,20 +189,18 @@ def ProcessPayment(request):
           customer=request.user.customer
           print(data)
           order,created = Order.objects.get_or_create(customer=customer,payment_confirmation = False)
-          #order.transaction_id = transaction_id
+          order.transaction_id = transaction_id
           order.payment_confirmation = True
 
-          payment = Pa.objects.create(
+          payment_info = Payment.objects.create(
                customer = customer,
-               order = order,
-               address = data['shipping']['address'],
-               city = data['shipping']['city'],
-               comments = data['shipping']['comments'],
-               country = data['shipping']['country'],
-               zipcode = data['shipping']['zip'],
+               card_number = data['payment']['card_num'],
+               card_holder_name = data['payment']['card_name'],
+               expiration = data['payment']['exp'],
+               cvv = data['payment']['cvv'],
           )
 
-          order.shipping = shipping
+          order.card_data = payment_info
 
           order.save()
           

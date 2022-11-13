@@ -79,9 +79,10 @@ class Shipping(models.Model):
 
 
 class Payment(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, blank = True, null = True)
     card_number = models.CharField(max_length=30,null=True, blank = True)
     card_holder_name = models.CharField(max_length=30,null=True, blank = True)
-    expiration = models.DateTimeField(auto_now_add = True)
+    expiration = models.CharField(max_length=30,null=True, blank = True)
     cvv = models.CharField(max_length=3,null=True, blank = True)
 
     def __str__(self):
@@ -89,7 +90,7 @@ class Payment(models.Model):
 
 
 class Order(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank = True, null = True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, blank = True, null = True)
     date_ordered = models.DateTimeField(auto_now_add = True)
     #complete = False => Open cart => continue add items to the cart
     #complete = True => Closed cart => no items can be added to the cart
