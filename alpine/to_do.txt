@@ -1,5 +1,7 @@
 in case the cart is empty block shipping and payment
+set restrictions payment and shipping form
 implement payment
 resolve for guest users
 login + register
 maybe use delete on cascade for things
+add Visa

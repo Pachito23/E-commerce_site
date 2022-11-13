@@ -63,24 +63,25 @@ input{
                         <form class="card-details ">
                             <div class="form-group mb-0">
                                     <p class="text-warning mb-0">Card Number</p> 
-                                      <input type="text" name="card-num" placeholder="1234 5678 9012 3457" size="17" id="cno" minlength="19" maxlength="19">
+                                      <input class="payment" type="text" name="card_num" placeholder="1234 5678 9012 3457" size="17" id="cno" minlength="19" maxlength="19">
                                     <img src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg" style="position: relative; left: 15%" width="64px" height="60px" />
                                     <img src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg" style="position: relative; left: 15%" width="64px" height="60px" />
 
                             </div>
     
                             <div class="form-group">
-                                <p class="text-warning mb-0">Cardholder's Name</p> <input type="text" pattern="[A-Za-z]{3}" name="name" placeholder="Name" size="17">
+                                <p class="text-warning mb-0">Cardholder's Name</p>
+                                <input class="payment" type="text" pattern="[A-Za-z]{3}" name="card_name" placeholder="Name" size="17">
                             </div>
                             <div class="form-group pt-2">
                                 <div class="row d-flex">
                                     <div class="col-sm-4">
                                         <p class="text-warning mb-0">Expiration</p>
-                                        <input type="text" name="exp" placeholder="MM/YYYY" size="7" id="exp" minlength="7" maxlength="7">
+                                        <input class="payment" type="text" name="exp" placeholder="MM/YYYY" size="7" id="exp" minlength="7" maxlength="7">
                                     </div>
                                     <div class="col-sm-3">
                                         <p class="text-warning mb-0">Cvv</p>
-                                        <input type="password" name="cvv" placeholder="&#9679;&#9679;&#9679;" size="1" minlength="3" maxlength="3">
+                                        <input class="payment" type="password" name="cvv" placeholder="&#9679;&#9679;&#9679;" size="1" minlength="3" maxlength="3">
                                     </div>
                                     <div class="col-sm-5 pt-0">
                                         <a type="button" 
@@ -90,7 +91,7 @@ input{
                                             border-radius: 30px;
                                             margin-left: -90px;
                                         "
-                                        class="btn btn-primary" href="{% url 'thank_you' %}"><span>Finish Payment</span></a>
+                                        class="btn btn-primary" id="done"><span>Finish Payment</span></a>
                                     </div>
                                 </div>
                             </div>		
@@ -100,10 +101,10 @@ input{
         </div>
     </div>
 
-    <!-- <script type="text/javascript">
-        var form = document.getElementsByClassName('form-control')
+     <script type="text/javascript">
+        var form = document.getElementsByClassName('payment')
         
-        document.getElementById('go-to-payment').addEventListener('click',function(e){
+        document.getElementById('done').addEventListener('click',function(e){
           SubmitFormData()
         })
         
@@ -112,38 +113,26 @@ input{
 
           console.log('Button clicked');
 
-          var UserFormData = {
-            'FirstName':null,
-            'LastName':null,
-            'email':null,
-            'total':total,
+          var PaymentData = {
+            'card_num':null,
+            'card_name':null,
+            'exp':null,
+            'cvv':null,
           }
 
-          var ShippingData = {
-            'address':null,
-            'comments':null,
-            'country':null,
-            'city':null,
-            'zip':null,
-          }
+          PaymentData.card_num = form.card_num.value
+          PaymentData.card_name = form.card_name.value
+          PaymentData.exp = form.exp.value
+          PaymentData.cvv = form.cvv.value
 
-          UserFormData.FirstName = form.FirstName.value
-          UserFormData.LastName = form.LastName.value
-          UserFormData.email = form.email.value
-          ShippingData.address = form.address.value
-          ShippingData.comments = form.comments.value
-          ShippingData.country = form.country.value
-          ShippingData.city = form.city.value
-          ShippingData.zip = form.zip.value
-
-          var url='/process_order/'
+          var url='/process_payment/'
           fetch(url,{
             method:'POST',
             headers:{
               'Content-type':'application/json',
               'X-CSRFToken':csrftoken,
             },
-            body:JSON.stringify({'form':UserFormData,'shipping':ShippingData})
+            body:JSON.stringify({'payment':PaymentData})
           })
 
           .then((response) => response.json())
@@ -152,6 +141,6 @@ input{
           })
         }
 
-      </script> -->
+      </script>
  </body>
 {% endblock content %}

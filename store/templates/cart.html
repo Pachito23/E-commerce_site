@@ -62,12 +62,24 @@
 
                 </div>
               </div>
+
+              {% if order.empty %}
+              <div class="card mb-4">
+                <div class="card-body">
+                  <p><strong>Expected shipping delivery</strong></p>
+                  <p class="mb-0">Unable to approximate delivery, no items added to cart</p>
+                </div>
+              </div>
+              {% endif %}
+
+              {% if not order.empty %}
               <div class="card mb-4">
                 <div class="card-body">
                   <p><strong>Expected shipping delivery</strong></p>
                   <p class="mb-0">{{order.delivery_date1|date:"j.n.Y"}} - {{order.delivery_date2|date:"j.n.Y"}}</p>
                 </div>
               </div>
+              {% endif %}
 
               <!-- Payment -->
 
@@ -106,11 +118,21 @@
                     </li>
                   </ul>
       
-                  <a style="color: inherit" href="{% url 'shipping' %}">
-                  <button type="button" class="btn btn-primary btn-lg btn-block">
-                    Go to shipping
-                  </button>
-                  </a>
+                  {% if not order.empty %}
+                    <a style="color: inherit" href="{% url 'shipping' %}">
+                    <button type="button" class="btn btn-primary btn-lg btn-block">
+                      Go to shipping
+                    </button>
+                    </a>
+                  {% endif %}
+
+                  {% if order.empty %}
+                    <a style="color: inherit" href="{% url 'store' %}">
+                    <button type="button" class="btn btn-primary btn-lg btn-block">
+                      Shipping not available <br><small> empty cart</small>
+                    </button>
+                    </a>
+                  {% endif %}
                 </div>
               </div>
             </div>

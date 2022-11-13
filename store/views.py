@@ -9,7 +9,7 @@ import datetime
 def home(request):
      if request.user.is_authenticated:
           customer = request.user.customer
-          order,created = Order.objects.get_or_create(customer=customer,complete = False)
+          order,created = Order.objects.get_or_create(customer=customer,payment_confirmation = False)
           items =order.orderitem_set.all()
      else:
           items=[]
@@ -21,7 +21,7 @@ def store(request):
      products = Product.objects.all()
      if request.user.is_authenticated:
           customer = request.user.customer
-          order,created = Order.objects.get_or_create(customer=customer,complete = False)
+          order,created = Order.objects.get_or_create(customer=customer,payment_confirmation = False)
           items =order.orderitem_set.all()
      else:
           items=[]
@@ -32,7 +32,7 @@ def store(request):
 def cart(request):
      if request.user.is_authenticated:
           customer = request.user.customer
-          order,created = Order.objects.get_or_create(customer=customer,complete = False)
+          order,created = Order.objects.get_or_create(customer=customer,payment_confirmation = False)
           items =order.orderitem_set.all()
      else:
           items=[]
@@ -43,7 +43,7 @@ def cart(request):
 def shipping(request):
      if request.user.is_authenticated:
           customer = request.user.customer
-          order,created = Order.objects.get_or_create(customer=customer,complete = False)
+          order,created = Order.objects.get_or_create(customer=customer,payment_confirmation = False)
           items =order.orderitem_set.all()
      else:
           items=[]
@@ -51,10 +51,46 @@ def shipping(request):
      context = {'items':items, 'order':order}
      return render(request, 'shipping.html', context)
 
+def sleeping_bags(request):
+     products = Product.objects.all()
+     if request.user.is_authenticated:
+          customer = request.user.customer
+          order,created = Order.objects.get_or_create(customer=customer,payment_confirmation = False)
+          items =order.orderitem_set.all()
+     else:
+          items=[]
+          order=[]
+     context = {'products': products,'items':items, 'order':order}
+     return render(request, 'sleeping_bags.html', context)
+
+def jackets(request):
+     products = Product.objects.all()
+     if request.user.is_authenticated:
+          customer = request.user.customer
+          order,created = Order.objects.get_or_create(customer=customer,payment_confirmation = False)
+          items =order.orderitem_set.all()
+     else:
+          items=[]
+          order=[]
+     context = {'products': products,'items':items, 'order':order}
+     return render(request, 'jackets.html', context)
+
+def accessories(request):
+     products = Product.objects.all()
+     if request.user.is_authenticated:
+          customer = request.user.customer
+          order,created = Order.objects.get_or_create(customer=customer,payment_confirmation = False)
+          items =order.orderitem_set.all()
+     else:
+          items=[]
+          order=[]
+     context = {'products': products,'items':items, 'order':order}
+     return render(request, 'accessories.html', context)
+
 def payment(request):
      if request.user.is_authenticated:
           customer = request.user.customer
-          order,created = Order.objects.get_or_create(customer=customer,complete = False)
+          order,created = Order.objects.get_or_create(customer=customer,payment_confirmation = False)
           items =order.orderitem_set.all()
      else:
           items=[]
@@ -65,7 +101,7 @@ def payment(request):
 def about(request):
      if request.user.is_authenticated:
           customer = request.user.customer
-          order,created = Order.objects.get_or_create(customer=customer,complete = False)
+          order,created = Order.objects.get_or_create(customer=customer,payment_confirmation = False)
           items =order.orderitem_set.all()
      else:
           items=[]
@@ -83,7 +119,7 @@ def updateItem(request):
 
      customer = request.user.customer
      product = Product.objects.get(id =productId)
-     order,created = Order.objects.get_or_create(customer=customer,complete = False)
+     order,created = Order.objects.get_or_create(customer=customer,payment_confirmation = False)
 
      orderItem,created =OrderItem.objects.get_or_create(order = order, product=product)
 
@@ -108,12 +144,11 @@ def ProcessOrder(request):
      if request.user.is_authenticated:
           customer=request.user.customer
           print(data)
-          order,created = Order.objects.get_or_create(customer=customer,complete = False)
+          order,created = Order.objects.get_or_create(customer=customer,payment_confirmation = False)
           total=float(data['form']['total'])
 
           if total == order.cart_total_final_price:
                order.complete = True
-          order.save()
 
           shipping = Shipping.objects.create(
                customer = customer,
@@ -125,7 +160,7 @@ def ProcessOrder(request):
                zipcode = data['shipping']['zip'],
           )
 
-          order.shipping = shipping
+          order.update_shipping(shipping)
 
           order.save()
           
@@ -141,15 +176,11 @@ def ProcessPayment(request):
      if request.user.is_authenticated:
           customer=request.user.customer
           print(data)
-          order,created = Order.objects.get_or_create(customer=customer,complete = False)
-          total=float(data['form']['total'])
+          order,created = Order.objects.get_or_create(customer=customer,payment_confirmation = False)
           #order.transaction_id = transaction_id
+          order.payment_confirmation = True
 
-          if total == order.cart_total_final_price:
-               order.complete = True
-          order.save()
-
-          shipping = Shipping.objects.create(
+          payment = Pa.objects.create(
                customer = customer,
                order = order,
                address = data['shipping']['address'],
@@ -171,7 +202,7 @@ def ProcessPayment(request):
 def thank_you(request):
      if request.user.is_authenticated:
           customer = request.user.customer
-          order,created = Order.objects.get_or_create(customer=customer,complete = False)
+          order,created = Order.objects.get_or_create(customer=customer,payment_confirmation = False)
           items =order.orderitem_set.all()
      else:
           items=[]

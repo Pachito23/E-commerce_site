@@ -45,6 +45,7 @@
 
         </div>
         <div class="col-md-8 order-md-1">
+          {% if not order.complete and not order.empty%}
           <h4 class="mb-3">Billing address</h4>
           <form class="needs-validation" novalidate="">
             <div class="row">
@@ -131,11 +132,29 @@
               </div>
             </div>
 
-          <a style="color: inherit" href="{% url 'payment' %}">
-            <button type="button" id="go-to-payment" class="btn btn-primary btn-lg btn-block">
-              Go to payment
-            </button>
-          </a>
+              <a style="color: inherit" href="{% url 'payment' %}">
+                <button type="button" id="go-to-payment" class="btn btn-primary btn-lg btn-block">
+                  Go to payment
+                </button>
+              </a>
+            {% endif %}
+
+            {% if order.complete %}
+              <a style="color: inherit" href="{% url 'payment' %}">
+                <button type="button" class="btn btn-primary btn-lg btn-block">
+                  Go to payment <br><small> adress already selected</small>
+                </button>
+              </a>
+            {% endif %}
+
+            {% if order.empty %}
+              <a style="color: inherit" href="{% url 'store' %}">
+                <button type="button" class="btn btn-primary btn-lg btn-block">
+                  !!!EMPTY ORDER!!! <br><small> go back to home</small>
+                </button>
+              </a>
+            {% endif %}
+
         </div>
       </div>
       <div style="margin-top:150px"></div>
