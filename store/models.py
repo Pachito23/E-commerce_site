@@ -10,17 +10,32 @@ import datetime
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE, null = True, blank = True)
-    name = models.CharField(max_length = 30,null=True)
+    full_name = models.CharField(max_length = 30,null=False)
     email = models.CharField(max_length = 50,null=True)
 
+    @property
+    def LastName(self):
+        name_list = self.full_name.split(' ')
+        return name_list[-1]
+
+    @property
+    def FirstName(self):
+        name_list = self.full_name.split(' ')
+        first_names=""
+        for name in name_list[:-1]:
+            first_names += name + ' '
+        return first_names
+
     def __str__(self):
-        return self.name
+        return self.full_name
+
 
 
 class Product(models.Model):
     name = models.CharField(max_length=50,null=True)
     price = models.FloatField(validators=[MinValueValidator(0.0)])
     type = models.CharField( max_length=30, blank = False,choices = [("Sleeping bag","Sleeping bag"),("Jacket","Jacket"),("Accessory","Accessory")])
+    size = models.CharField( max_length=3, blank = False, choices = [("N/a","N/a"),("XS","XS"),("S","S"),("M","M"),("L","L"),("XL","XL")])    
     sale = models.BooleanField(default = False, null = True, blank = False)
     discount = models.IntegerField("% of discount", null = True, blank = False, default=0, validators=[MinValueValidator(0), MaxValueValidator(99)])
     image = models.ImageField(null = True, blank = False)
@@ -98,7 +113,12 @@ class Order(models.Model):
     transaction_id = models.CharField(max_length=50,null=True,blank=True)
     payment_confirmation = models.BooleanField(default = False, null = True, blank = False)
     shipping = models.ForeignKey(Shipping, on_delete=models.SET_NULL, blank = True, null = True)
-    card_data = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank = True, null = True)
+    payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank = True, null = True)
+
+    def delete(self, *args, **kwargs):
+        self.shipping.delete()
+        self.payment.delete()
+        super().delete(*args, **kwargs)
 
     def __str__(self):
         return 'Order nr ' + str(self.id)
@@ -107,6 +127,11 @@ class Order(models.Model):
         if self.shipping is not None:
             self.shipping.delete()
         self.shipping=shipping_data
+
+    def update_payment(self, payment_data):
+        if self.payment is not None:
+            self.payment.delete()
+        self.payment=payment_data
 
     @property
     def empty(self):
@@ -143,6 +168,7 @@ class Order(models.Model):
         orderitems = self.orderitem_set.all()
         total = sum ([item.get_total_final_price for item in orderitems])
         return total
+
 
 
 class OrderItem(models.Model):

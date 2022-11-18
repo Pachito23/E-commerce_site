@@ -2,6 +2,18 @@
 {% load static %}
 {% block content %}
 <head>
+   <script>
+      window.addEventListener( "pageshow", function ( event ) {
+      var historyTraversal = event.persisted || 
+                           ( typeof window.performance != "undefined" && 
+                                window.performance.navigation.type === 2 );
+      if ( historyTraversal ) 
+      {
+        // Handle page restore.
+        window.location.reload();
+      }
+      });
+    </script>
    <style>
       body{
          background-image: url("https://upload.wikimedia.org/wikipedia/commons/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg");
@@ -47,7 +59,7 @@
                                  ${{product.final_price|floatformat:2}}
                                  <div class="text-left">&nbsp;</div>
                                  <div class="text-left">Type: {{product.type}}</div>
-                                 <div class="text-left">Size:</div>
+                                 <div class="text-left">Size: {{product.size}}</div>
                               </div>
 
                            </div>

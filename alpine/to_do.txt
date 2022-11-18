@@ -1,5 +1,2 @@
-in case the cart is empty block shipping and payment
-set restrictions payment and shipping form
 resolve for guest users
 login + register customer
-add size on product model

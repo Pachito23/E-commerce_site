@@ -1,8 +1,22 @@
 {% extends 'main.html' %}
 {% load static %}
 {% block content %}
-    
-    <section class="h-100 gradient-custom">
+    <head>
+      <script>
+        window.addEventListener( "pageshow", function ( event ) {
+        var historyTraversal = event.persisted || 
+                             ( typeof window.performance != "undefined" && 
+                                  window.performance.navigation.type === 2 );
+        if ( historyTraversal ) 
+        {
+          // Handle page restore.
+          window.location.reload();
+        }
+        });
+      </script>
+    </head>
+    <body>
+      <section class="h-100 gradient-custom">
         <div class="container py-5">
           <div class="row d-flex justify-content-center my-4">
             <div class="col-md-8">
@@ -36,9 +50,8 @@
                       <!-- Quantity -->
                       <div class="d-flex mb-4" style="max-width: 300px; position: relative; left: 90px;">
                       <!--To delete next segment and create a new quantity display with arrows--------------------------------->
-                        <div data-product={{item.product.id}} data-action="" class="form-outline update-cart" style="max-width: 100px;">
-                            <label class="form-label" style="position: relative; left: 20px;" for="form1">Quantity</label>
-                          <input id="form1" min="0" name="quantity" value="{{item.quantity}}" type="number" class="form-control">
+                        <div class="form-outline" style="max-width: 100px;">
+                            <span class="form-label" style="position: relative;" for="form1"><br>Quantity: {{ item.quantity }}</span>
                         </div>
     
                       </div>
@@ -118,7 +131,7 @@
                     </li>
                   </ul>
       
-                  {% if not order.empty %}
+                  {% if not order.empty and is_authenticated %}
                     <a style="color: inherit" href="{% url 'shipping' %}">
                     <button type="button" class="btn btn-primary btn-lg btn-block">
                       Go to shipping
@@ -126,10 +139,18 @@
                     </a>
                   {% endif %}
 
-                  {% if order.empty %}
+                  {% if order.empty and is_authenticated %}
                     <a style="color: inherit" href="{% url 'store' %}">
                     <button type="button" class="btn btn-primary btn-lg btn-block">
                       Shipping not available <br><small> empty cart</small>
+                    </button>
+                    </a>
+                  {% endif %}
+
+                  {% if not is_authenticated %}
+                    <a style="color: inherit" href="{% url 'store' %}">
+                    <button type="button" class="btn btn-primary btn-lg btn-block">
+                      Shipping not available <br><small> not logged in</small>
                     </button>
                     </a>
                   {% endif %}
@@ -139,4 +160,5 @@
           </div>
         </div>
       </section>
+    </body>
 {% endblock content %}

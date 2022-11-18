@@ -3,6 +3,18 @@
 
 {% block content %}
 <head>
+  <script>
+    window.addEventListener( "pageshow", function ( event ) {
+    var historyTraversal = event.persisted || 
+                         ( typeof window.performance != "undefined" && 
+                              window.performance.navigation.type === 2 );
+    if ( historyTraversal ) 
+    {
+      // Handle page restore.
+      window.location.reload();
+    }
+    });
+  </script>
     <style>
        body{
           background-image: url("https://img.freepik.com/premium-photo/clean-white-snow-closeup-winter-background-snow-surface-fresh-fluffy-white-snow-texture_262708-2844.jpg?w=2000");
@@ -132,7 +144,7 @@
               </div>
             </div>
 
-              <a style="color: inherit" href="{% url 'payment' %}">
+              <a style="color: inherit">
                 <button type="button" id="go-to-payment" class="btn btn-primary btn-lg btn-block">
                   Go to payment
                 </button>
@@ -142,7 +154,7 @@
             {% if order.complete %}
               <a style="color: inherit" href="{% url 'payment' %}">
                 <button type="button" class="btn btn-primary btn-lg btn-block">
-                  Go to payment <br><small> adress already selected</small>
+                  Go to payment <br><small> address already selected</small>
                 </button>
               </a>
             {% endif %}
@@ -171,6 +183,7 @@
         function SubmitFormData()
         {
 
+          problems=false
           console.log('Button clicked');
 
           var UserFormData = {
@@ -188,29 +201,69 @@
             'zip':null,
           }
 
-          UserFormData.FirstName = form.FirstName.value
-          UserFormData.LastName = form.LastName.value
-          UserFormData.email = form.email.value
-          ShippingData.address = form.address.value
-          ShippingData.comments = form.comments.value
-          ShippingData.country = form.country.value
-          ShippingData.city = form.city.value
-          ShippingData.zip = form.zip.value
+          if (form.FirstName.value.length == 0) {
+            alert("Invalid First Name")
+            problems=true
+          }
 
-          var url='/process_order/'
-          fetch(url,{
-            method:'POST',
-            headers:{
-              'Content-type':'application/json',
-              'X-CSRFToken':csrftoken,
-            },
-            body:JSON.stringify({'form':UserFormData,'shipping':ShippingData})
-          })
+          if (form.LastName.value.length == 0) {
+            alert("Invalid Last Name")
+            problems=true
+          }
 
-          .then((response) => response.json())
-          .then((data)=>{
-            console.log('Success:',data);
-          })
+          if (form.email.value.length == 0) {
+            alert("Invalid email")
+            problems=true
+          }
+
+          if (form.address.value.length == 0) {
+            alert("Invalid address")
+            problems=true
+          }
+
+          if (form.country.value.length == 0) {
+            alert("Invalid country")
+            problems=true
+          }
+
+          if (form.city.value.length == 0) {
+            alert("Invalid city")
+            problems=true
+          }
+          
+          if (form.zip.value.length == 0) {
+            alert("Invalid zip")
+            problems=true
+          }
+
+          if(problems==false)
+          {
+              UserFormData.FirstName = form.FirstName.value
+              UserFormData.LastName = form.LastName.value
+              UserFormData.email = form.email.value
+              ShippingData.address = form.address.value
+              ShippingData.comments = form.comments.value
+              ShippingData.country = form.country.value
+              ShippingData.city = form.city.value
+              ShippingData.zip = form.zip.value
+
+              var url='/process_order/'
+              fetch(url,{
+                method:'POST',
+                headers:{
+                  'Content-type':'application/json',
+                  'X-CSRFToken':csrftoken,
+                },
+                body:JSON.stringify({'form':UserFormData,'shipping':ShippingData})
+              })
+
+              .then((response) => response.json())
+              .then((data)=>{
+                console.log('Success:',data);
+              })
+
+              setTimeout(() => {  window.location.href = "{% url 'payment' %}" }, 500);
+          }
         }
 
       </script>

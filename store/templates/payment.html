@@ -3,6 +3,18 @@
 
 {% block content %}
 <head>
+  <script>
+    window.addEventListener( "pageshow", function ( event ) {
+    var historyTraversal = event.persisted || 
+                         ( typeof window.performance != "undefined" && 
+                              window.performance.navigation.type === 2 );
+    if ( historyTraversal ) 
+    {
+      // Handle page restore.
+      window.location.reload();
+    }
+    });
+  </script>
     <style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
@@ -59,6 +71,7 @@ input{
         <div class="row d-flex justify-content-center">
             <div class="col-sm-12">
                 <div class="card mx-auto" style="border-style: solid; border-color: blue;">
+                  {% if order.complete and not order.payment_confirmation %}
                     <p class="heading">PAYMENT DETAILS</p>
                         <form class="card-details ">
                             <div class="form-group mb-0">
@@ -91,12 +104,15 @@ input{
                                             border-radius: 30px;
                                             margin-left: -90px;
                                         "
-                                        class="btn btn-primary" id="done"><span>Finish Payment</span></a>
+                                        class="btn btn-primary" id="done"><span style="color:white">Finish Payment</span></a>
                                     </div>
                                 </div>
                             </div>		
                         </form>
                 </div>
+                {% else %}
+                    <p class="heading text-center" style="color:blue">Please complete your order first!</p>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -111,6 +127,7 @@ input{
         function SubmitFormData()
         {
 
+          var problems = false
           console.log('Button clicked');
 
           var PaymentData = {
@@ -120,27 +137,51 @@ input{
             'cvv':null,
           }
 
-          PaymentData.card_num = form.card_num.value
-          PaymentData.card_name = form.card_name.value
-          PaymentData.exp = form.exp.value
-          PaymentData.cvv = form.cvv.value
+          if (form.card_num.value.length != 19) {
+            alert("Invalid card number")
+            problems=true
+          }
 
-          var url='/process_payment/'
-          fetch(url,{
-            method:'POST',
-            headers:{
-              'Content-type':'application/json',
-              'X-CSRFToken':csrftoken,
-            },
-            body:JSON.stringify({'payment':PaymentData})
-          })
+          if (form.card_name.value.length == 0) {
+            alert("Invalid card name")
+            problems=true
+          }
 
-          .then((response) => response.json())
-          .then((data)=>{
-            console.log('Success:',data);
-          })
+          if (form.exp.value.length != 5) {
+            alert("Invalid expiration date")
+            problems=true
+          }
+
+          if (form.cvv.value.length == 0) {
+            alert("Invalid CVV")
+            problems=true
+          }
+
+          if(problems == false)
+          {
+              PaymentData.card_num = form.card_num.value
+              PaymentData.card_name = form.card_name.value
+              PaymentData.exp = form.exp.value
+              PaymentData.cvv = form.cvv.value
+
+              var url='/process_payment/'
+              fetch(url,{
+                method:'POST',
+                headers:{
+                  'Content-type':'application/json',
+                  'X-CSRFToken':csrftoken,
+                },
+                body:JSON.stringify({'payment':PaymentData})
+              })
+
+              .then((response) => response.json())
+              .then((data)=>{
+                console.log('Success:',data);
+              })
+
+              setTimeout(() => {  window.location.href = "{% url 'thank_you' %}" }, 500);
+          }
         }
-
       </script>
  </body>
 {% endblock content %}
