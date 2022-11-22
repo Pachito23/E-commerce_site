@@ -235,7 +235,7 @@ a{color:inherit;text-decoration:none}
       </script>
       {% endif %}
 
-      {% if created %}
+      {% if created and not is_authenticated %}
       <h3 class="display-5 text-center" style="color: white;"><strong>Profile Created</strong></h3>
       <h5 class="display-5 text-center" style="color: white;"><strong>Redirecting to login in 3..2..1..Done</strong></h5>
       <script>
